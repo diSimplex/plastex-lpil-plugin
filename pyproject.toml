@@ -17,4 +17,4 @@ requires = ["pdm-pep517>=1.0.0"]
 build-backend = "pdm.pep517.api"
 
 [project.entry-points."plastex.plugin"]
-lpilPasTeXPlugin = "lpilPlasTeXPlugin"
+lpilPasTeXPlugin = "lpilPlasTeXPlugin:10"

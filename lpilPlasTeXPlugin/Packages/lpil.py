@@ -16,8 +16,11 @@ import yaml
 from plasTeX import Command
 from plasTeX.Tokenizer import Tokenizer
 
-def ProcessOptions(options, document) :
-  print("\nHello from lpil_plastex!\n")
+def loadingPackage(config, texStream, texDocument, options, context) :
+  context.loadLaTeXPackage(texStream, 'lpil.sty', options)
+
+#def ProcessOptions(options, document) :
+#  print("\nHello from lpil_plastex!\n")
 
 class directlua(Command) :
   """ \\directlua{luaCmd} """
@@ -25,9 +28,9 @@ class directlua(Command) :
 
   def postParse(self, tex) :
     print(f"\ninvoking directlua ({self.attributes['luaCmd'].source})\n")
-    tex.pushTokens(
-      list(Tokenizer(
-        "\\lpilOrigInput{this_is_very_silly.tex}",
-        tex.ownerDocument.context
-      ))
-    )
+    #tex.pushTokens(
+    #  list(Tokenizer(
+    #    "\\lpilOrigInput{this_is_very_silly.tex}",
+    #    tex.ownerDocument.context
+    #  ))
+    #)
