@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+# A very simple python script which can "parse" a Pygments Style file and
+# extracts the style into a format the lpilPlastexPlugin can use.
+
+# To use it...
+#  - run this script over the raw pygments style file
+#  - and copy and paste the output into the Python implementation of
+#    the style file
+
+import json
+import os
+import re
+import sys
+
+if len(sys.argv) < 2 :
+  print("Usage convertPygments <<aPygements.sty>>")
+  sys.exit(1)
+
+pygmentsStyPath = sys.argv[1]
+
+getTextColor = re.compile(r'\\textcolor\[rgb\]{(\d.\d\d,\d.\d\d,\d.\d\d)}')
+
+pygmentsMap = {}
+with open(pygmentsStyPath) as pyFile :
+  for aLine in pyFile :
+    aLine = aLine.strip()
+    if not '@namedef' in aLine : continue
+    parts = aLine.split('}{', maxsplit=1)
+    code = parts[0].split('@')[-1]
+    aDef = parts[1]
+    defMap = {}
+    rgb = re.search(getTextColor, aDef)
+    if rgb :
+      rgbValues = rgb.group(1).split(',')
+      hexStr = '#'
+      for aValue in rgbValues :
+        aValue = min(int(float(aValue)*255), 255)
+        hexStr = f"{hexStr}{aValue:02x}"
+      defMap['c'] = hexStr
+    if 'textit' in aDef : defMap['i'] = True # test for PY@it
+    if 'textbf' in aDef : defMap['b'] = True # test for PY@bf
+    # should test for PY@bc - places a box not used by LPiL-SAS
+    # should test for PY@ul - not used by LPil-SAS
+    # should test for PY@ff - not used by LPiL-SAS
+    pygmentsMap[code] = defMap
+
+print("pygmentsMap = {")
+for aCode in sorted(pygmentsMap.keys()) :
+  print(f"  '{aCode}' : {json.dumps(pygmentsMap[aCode])},")
+print("}")

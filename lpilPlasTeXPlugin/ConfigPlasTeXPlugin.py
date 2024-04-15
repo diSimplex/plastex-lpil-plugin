@@ -29,7 +29,7 @@ def addConfig(config):
 def updateConfig(config):
   #print("Hello from LPiL Config PlasTeX Plugin : updateConfig")
 
-  config['general']['renderer'] = 'Gerby'
+  config['general']['renderer'] = 'LPiLGerby'
 
   configFile = config['lpil']['lpilConfig']
   if configFile :

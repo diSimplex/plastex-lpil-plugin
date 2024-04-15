@@ -139,6 +139,21 @@ def computeCodeTypeFileNames(tex, config, codeType, baseName) :
   ])
   return os.path.join(config['lpil']['latexDir'], writeFileName)
 
+class inputHtml(Command) :
+  args = 'filePath:str'
+
+  def invoke(self, tex) :
+    a = self.parse(tex)
+    filePath = a['filePath']
+    try :
+      with open(filePath, encoding='utf8') as htmlFile :
+        self.userdata['html'] = htmlFile.read()
+    except :
+      log.info(f"Could not read raw html file {filePath}")
+      self.userdata['html'] = f"""
+<h1>Could not read raw html file: {filePath}</h1>
+"""
+
 class LpilBaseLoadCodeType(Command) :
   args = 'filePath:str'
 
@@ -148,7 +163,7 @@ class LpilBaseLoadCodeType(Command) :
     pygmentedPath = computeCodeTypeFileNames(
       tex, self.config, self.codeType, filePath
     )
-    inputCmd = "\\input{"+pygmentedPath+"}"
+    inputCmd = "\\inputHtml{"+pygmentedPath+"}"
     tex.input(inputCmd)
     return []
 
@@ -162,7 +177,7 @@ class LpilBaseCodeType(VerbatimEnvironment) :
       tex, self.config, self.codeType, baseName
     )
     verbatim.invoke(self, tex)
-    inputCmd = "\\input{"+pygmentedPath+"}"
+    inputCmd = "\\inputHtml{"+pygmentedPath+"}"
     tex.input(inputCmd)
     return []
 
