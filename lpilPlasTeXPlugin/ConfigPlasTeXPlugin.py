@@ -27,7 +27,13 @@ def addConfig(config):
     )
   )
 
-def updateConfig(config):
+  section["docTag"] = StringOption(
+    """The unique Gerby tag of this document""",
+    options = "--lpil-doc-tag",
+    default = ""
+  )
+
+def updateConfig(config, fileName):
   #print("Hello from LPiL Config PlasTeX Plugin : updateConfig")
 
   config['general']['renderer'] = 'LPiLGerby'
@@ -50,6 +56,14 @@ def updateConfig(config):
           '$buildDir', lpilConfig['build']['buildDir']
         )
       config['lpil']['latexDir'] = latexDir
+
+    lpilDocTag = os.path.splitext(os.path.basename(fileName))[0]
+    if not config['lpil']['docTag'] :
+      config['lpil']['docTag'] = lpilDocTag
+
+    if not config['images']['base-url'] :
+      config['images']['base-url'] = lpilDocTag
+
 
 def getTokenizerOn(fileName, texStream) :
   try:
