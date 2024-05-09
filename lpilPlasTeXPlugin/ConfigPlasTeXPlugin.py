@@ -38,6 +38,9 @@ def updateConfig(config, fileName):
 
   config['general']['renderer'] = 'LPiLGerby'
 
+  if 'gerby' not in config['logging']['logging'] :
+    config['logging']['logging']['gerby'] = 40
+
   configFile = config['lpil']['lpilConfig']
   if configFile :
     lpilConfig = { 'build': {}}
@@ -63,7 +66,6 @@ def updateConfig(config, fileName):
 
     if not config['images']['base-url'] :
       config['images']['base-url'] = lpilDocTag
-
 
 def getTokenizerOn(fileName, texStream) :
   try:

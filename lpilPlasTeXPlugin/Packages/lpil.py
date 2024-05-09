@@ -18,6 +18,7 @@ import os
 import yaml
 
 from plasTeX import subclasses, Command, Environment, VerbatimEnvironment
+from plasTeX.Base.LaTeX.Verbatim import verbatim
 from plasTeX.Tokenizer import Tokenizer
 from plasTeX.Logging import getLogger
 
@@ -171,6 +172,7 @@ class LpilBaseCodeType(VerbatimEnvironment) :
   args = 'baseName:str'
 
   def invoke(self, tex) :
+    if self.macroMode == Environment.MODE_END : return
     a = self.parse(tex)
     baseName = a['baseName']
     pygmentedPath = computeCodeTypeFileNames(
