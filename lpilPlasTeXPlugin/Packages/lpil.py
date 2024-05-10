@@ -136,7 +136,7 @@ def computeCodeTypeFileNames(tex, config, codeType, baseName) :
     "-",
     codeType,
     f"-c{curFileCounters[baseName]:05d}",
-    '.pygmented.tex'
+    '.pygmented.html'
   ])
   return os.path.join(config['lpil']['latexDir'], writeFileName)
 

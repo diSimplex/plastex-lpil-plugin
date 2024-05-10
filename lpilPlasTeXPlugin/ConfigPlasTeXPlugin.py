@@ -23,7 +23,7 @@ def addConfig(config):
     """Location of LPiL configuration file""",
     options = "--lpil-config",
     default = os.path.join(
-      os.getenv("HOME"), ".config", "cfdoit", "config.toml"
+      os.getenv("HOME"), ".config", "lpil", "config.toml"
     )
   )
 
@@ -65,7 +65,7 @@ def updateConfig(config, fileName):
       config['lpil']['docTag'] = lpilDocTag
 
     if not config['images']['base-url'] :
-      config['images']['base-url'] = lpilDocTag
+      config['images']['base-url'] = '/docs/'+lpilDocTag
 
 def getTokenizerOn(fileName, texStream) :
   try:
