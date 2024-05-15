@@ -22,8 +22,6 @@ from plasTeX.Base.LaTeX.Verbatim import verbatim
 from plasTeX.Tokenizer import Tokenizer
 from plasTeX.Logging import getLogger
 
-from lpilGerybConfig.config import ConfigManager
-
 log = getLogger()
 status = getLogger('status')
 
@@ -294,30 +292,6 @@ class latexBuildDir(Command) :
 
   def invoke(self, tex) :
     tex.input(self.config['lpil']['latexDir'])
-
-class lpilChapterNumber(Command) :
-
-  def invoke(self, tex) :
-    chapterNumber = 1
-    if self.config['lpil']['collection'] :
-      collectionPath = os.path.join(
-        os.path.expanduser(~),
-        '.config', 'lpil',
-        self.config['lpil']['collection']+.yaml
-      )
-      try :
-        collectionDict = {}
-        with open(collectionPath) as collectionFile :
-          collectionDict = yaml.safe_load(collectionFile.read())
-      except Exception as err :
-        log.warning(repr(err))
-
-      if 'docOrder' in collectionDict :
-        for aDoc in collectionDict['docOrder'] :
-          if tex.jobname == aDoc : break
-          chapterNumber += 1
-
-    tex.input(chapterNumber)
 
 class includeLpilDiagram(Command) :
   """ \\includeLpilDiagram{lpilDiagram} """
