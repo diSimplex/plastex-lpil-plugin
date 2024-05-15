@@ -33,6 +33,12 @@ def addConfig(config):
     default = ""
   )
 
+  section['collection'] = StringOption(
+    """The LPiL collection to use to compute chapter numbers""",
+    options = "--lpil-collection",
+    default = ""
+  )
+
 def updateConfig(config, fileName):
   #print("Hello from LPiL Config PlasTeX Plugin : updateConfig")
 
@@ -110,3 +116,6 @@ def initPlugin(config, fileName, texStream, texDocument):
               t = getTokenizerOn(postAmble, texStream)
               texStream.inputs.insert(0, (t, iter(t)))
               texStream.currentInput = texStream.inputs[-1]
+          elif 'collection' in aLine :
+            collection = aLine.split('=')[1].strip()
+            config['lpil']['collection'] = collection
